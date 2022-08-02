@@ -473,45 +473,41 @@ get_header();
 
             </div>
             <div class="row info-row">
-                <div class="col-md-3 info-detail">
-                    <div>
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/home3/news-1.png" alt="">
-                        <div class="title-date">
-                            <p>Get a quote and stay protected easily with your laptop or mobile phone anytime, anywhere.</p>
-                            <span>01/10/2020</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 info-detail">
-                    <div>
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/home3/news-2.png" alt="">
-                        <div class="title-date">
-                            <p>Get a quote and stay protected easily with your laptop or mobile phone anytime, anywhere.</p>
-                            <span>01/10/2020</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 info-detail">
-                    <div>
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/home3/news-1.png" alt="">
-                        <div class="title-date">
-                            <p>Get a quote and stay protected easily with your laptop or mobile phone anytime, anywhere.</p>
-                            <span>01/10/2020</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-md-3 info-detail">
-                    <div>
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/home3/news-1.png" alt="">
-                        <div class="title-date">
-                            <p>Get a quote and stay protected easily with your laptop or mobile phone anytime, anywhere.</p>
-                            <span>01/10/2020</span>
+                <?php
+                    $the_query = new WP_Query( 'posts_per_page=4' ); ?>
+                      
+                    <?php
+                    // Start our WP Query
+                    while ($the_query -> have_posts()) : $the_query -> the_post();
+                    ?>
+                      
+                    <div class="col-md-3 info-detail">
+                        <div>
+                            <img style="height: 160px;" src="<?php the_post_thumbnail_url() ?>" alt="">
+                            <div style="height: 90px;" class="title-date d-flex flex-column justify-content-between">
+                                <a href="<?php the_permalink() ?>"><p style="margin-bottom: 0.5rem;">
+                                    <?php
+                                        $title = get_the_title();
+                                        $short_title = wp_trim_words( $title, 15, '...' );
+                                        echo $short_title;
+                                    ?>
+                                    </p></a>
+                                <span><?php echo get_the_date( 'd/m/Y' ) ?></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                        <?php
+                    // Display the Post Excerpt
+                    the_excerpt(__('(more…)')); ?></li>
+                      
+                    <?php
+                    // Repeat the process and reset once it hits the limit
+                    endwhile;
+                    wp_reset_postdata();
+                ?>
 
-
+               
             </div>
             <div class="link-news">
                 <a href="">Tìm hiểu
