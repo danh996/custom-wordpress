@@ -22,6 +22,35 @@ class WordCountAndTimePlugin{
 	function __construct(){
 		add_action('admin_menu', array($this, 'adminPage'));
 		add_action('admin_init', array($this, 'settings'));
+		add_action('the_content', array($this, 'ifWrap'));
+	}
+
+	function ifWrap($content){
+		if((is_main_query() AND is_single()) AND (get_option('wcp_wordcount', '1') OR get_option('wcp_readtime', '1'))){
+			return $this->createHTML($content);
+		}
+
+		return $content;
+	}
+
+	function createHTML($content){
+		return $content;
+		$html = '<h3>' . get_option('wcp_headline', 'Post Statistics') . '</h3><p>';
+		//get word count
+		if(get_option('wcp_wordcount', '1') OR get_option('wcp_readtime', '1')){
+			$wordCount = str_word_count(strip_tags($content));
+		}
+
+		if(get_option('wcp_wordcount', '1')){
+			$html .= 'This post has '. 10000 . 'words.<br>';
+		}
+
+		if(get_location('wcp_location', '0') == '0'){
+			;
+			return $html . $content;
+		}
+
+		return $content . $html;
 	}
 
 	function settings(){
